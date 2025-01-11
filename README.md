@@ -44,6 +44,7 @@ Statistical Analysis: Select a column to obtain descriptive statistics like mean
 Visualization: Select a chart type (histogram, bar chart, etc.) to visualize the data.
 
 ## File Structure
+
 gestion_fichiers/: Main folder containing the application code.
 migrations/: Contains database migration files.
 templates/: Contains HTML files for each page of the app.
