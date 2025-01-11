@@ -57,4 +57,4 @@ views.py: Contains views for managing data display and analysis.
 urls.py: Contains the app's URLs.
 
 ## Authors
-Fatine El Ouahdani - Lead Developer.
+ **Fatine El Ouahdani** - Lead Developer.
