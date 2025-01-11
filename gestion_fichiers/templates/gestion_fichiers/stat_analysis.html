@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Statistical Analysis</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            background-image: url('/static/images/im3.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: #444;
+            margin: 0;
+            height: 100vh;
+            flex-direction: column;
+            transition: background-color 0.5s ease;
+        }
+
+        .title {
+            width: 100%;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            animation: fadeIn 1s ease-in-out;
+            margin-top: 0;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .content-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin-top: 80px;
+            width: 100%;
+            max-width: 1200px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+      
+        .left-container {
+            width: 40%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-top: 10px;
+        }
+
+        .form-box {
+            width: 100%;
+            background-color: #ffffff;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+        }
+
+        .form-box:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-container select, .form-container button {
+            padding: 12px;
+            margin: 15px 0;
+            width: 100%;
+            font-weight: bold;
+            border: 2px solid #3B3B48;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            background-color: #F2D7D9;
+            color: #3B3B48;
+        }
+
+        .form-container select:focus, .form-container button:focus {
+            outline: none;
+            border-color: #3B3B48;
+        }
+
+        .form-container label {
+            font-weight: bold;
+            font-size: 16px;
+            color: #353442;
+        }
+
+        .form-container button {
+            background-color: #F2D7D9;
+            color: #3B3B48;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #353442;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .other-functionalities-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #353442;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .navigation-buttons a {
+            padding: 12px;
+            background-color: #F2D7D9;
+            color: #3B3B48;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #3B3B48;
+            display: block;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .navigation-buttons a:hover {
+            background-color: #353442;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .right-container {
+            width: 55%;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            margin-top: 30px;
+            margin-left: 60px;
+            max-height: 350px;
+            overflow-y: auto;
+            animation: slideIn 0.5s ease-out;
+            transform: translateX(20px); 
+    }
+
+
+
+        @keyframes slideIn {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #F2D7D9;
+            border-radius: 10px;
+            border: 3px solid #000;
+        }
+
+        table:hover {
+            transform: scale(1.02);
+        }
+
+        th, td {
+            padding: 12px 20px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #000;
+            border: 3px solid #000;
+        }
+
+        th {
+            background-color: #F2D7D9;
+            color: #000;
+            border-radius: 8px;
+        }
+
+        td {
+            background-color: #F2D7D9;
+            color: #000;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #F2D7D9;
+        }
+
+        tr:hover td {
+            background-color: #F2D7D9;
+        }
+
+        .stat-result {
+            background-color: #F2D7D9;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .stat-title {
+            font-weight: bold;
+            color: #000;
+        }
+
+        .stat-title-bg {
+            background-color: #F2D7D9;
+        }
+
+        .stat-analysis-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3B3B48;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="title">
+    Statistical Analysis of Dataset
+</div>
+
+<div class="content-container">
+
+
+    <div class="left-container">
+        <div class="form-box">
+  
+            <div class="form-container">
+                <form method="POST">
+                    {% csrf_token %}
+                    <label for="column">Select Column:</label>
+                    <select name="column" id="column">
+                        <option value="">--Select a column--</option>
+                        {% for column in columns %}
+                            <option value="{{ column }}" {% if column == selected_column %} selected {% endif %}>{{ column }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <button type="submit">Generate Statistics</button>
+                </form>
+            </div>
+
+  
+            <div class="other-functionalities-title">Other Functionalities</div>
+
+            <div class="navigation-buttons">
+                <a href="{% url 'upload_file' %}">Back to Upload</a>
+                <a href="{% url 'view_data' %}">Back to Data Overview</a>
+                <a href="{% url 'visualisation' %}">Go to Data Visualization</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="right-container" style="display: {% if stats_results %} block {% else %} none {% endif %};">
+        {% if stats_results %}
+            <div class="stat-analysis-title">Statistical Analysis Generated for {{ selected_column }}</div>
+            <table>
+                {% if stats_results.mean %}
+                    <tr>
+                        <th class="stat-title stat-title-bg">Mean</th>
+                        <td class="stat-result">{{ stats_results.mean }}</td>
+                    </tr>
+                {% endif %}
+                {% if stats_results.median %}
+                    <tr>
+                        <th class="stat-title stat-title-bg">Median</th>
+                        <td class="stat-result">{{ stats_results.median }}</td>
+                    </tr>
+                {% endif %}
+                {% if stats_results.std_dev %}
+                    <tr>
+                        <th class="stat-title stat-title-bg">Standard Deviation</th>
+                        <td class="stat-result">{{ stats_results.std_dev }}</td>
+                    </tr>
+                {% endif %}
+                {% if stats_results.min %}
+                    <tr>
+                        <th class="stat-title stat-title-bg">Min</th>
+                        <td class="stat-result">{{ stats_results.min }}</td>
+                    </tr>
+                {% endif %}
+                {% if stats_results.max %}
+                    <tr>
+                        <th class="stat-title stat-title-bg">Max</th>
+                        <td class="stat-result">{{ stats_results.max }}</td>
+                    </tr>
+                {% endif %}
+            </table>
+        {% endif %}
+    </div>
+
+</div>
+
+</body>
+</html>

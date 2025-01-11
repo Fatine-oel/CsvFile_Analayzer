@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualize Your Data</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-image: url('/static/images/im3.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s ease;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 30px;
+            height: 100%;
+            margin-left: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .selection-box {
+            background-color: white;
+            padding: 20px;
+            width: 300px;
+            border-radius: 8px;
+            margin-right: 20px;
+            color: black;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            height: 450px; 
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .selection-box:hover {
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+            transform: translateY(-10px);
+        }
+
+        .selection-box h1 {
+            font-size: 1.8em;
+            color: black;
+            margin-bottom: 10px;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+
+        .selection-box:hover h1 {
+            color: #3B3B48;
+        }
+
+        .chart-options, .column-selection, .scatter-columns {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .chart-options label, .column-selection label, .scatter-columns label {
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .chart-options select, .column-selection select, .scatter-columns select {
+            width: 100%;
+            padding: 8px;
+            font-size: 1em;
+            background-color: #FADADD;
+            border: 3px solid #3B3B48;
+            color: #3B3B48;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .chart-options select:focus, .column-selection select:focus, .scatter-columns select:focus {
+            background-color: #FADADD;
+            transform: scale(1.05);
+        }
+
+        .generate-btn {
+            background-color: #FADADD;
+            color: #3B3B48;
+            padding: 10px;
+            border: 3px solid #3B3B48;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin-top: auto;
+        }
+
+        .generate-btn:hover {
+            background-color: #3B3B48;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .charts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .chart-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 900px;
+            margin: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .chart-container:hover {
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+            transform: translateY(-10px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="selection-box">
+            <h1>Visualize Your Data</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="chart-options">
+                    <label for="chart_type">Select Chart Type:</label>
+                    <select id="chart_type" name="chart_type" onchange="updateColumnSelection()">
+                        <option value="histogram" {% if chart_type == 'histogram' %}selected{% endif %}>Histogram</option>
+                        <option value="bar_chart" {% if chart_type == 'bar_chart' %}selected{% endif %}>Bar Chart</option>
+                        <option value="scatter_plot" {% if chart_type == 'scatter_plot' %}selected{% endif %}>Scatter Plot</option>
+                        <option value="box_plot" {% if chart_type == 'box_plot' %}selected{% endif %}>Box Plot</option>
+                        <option value="violin_plot" {% if chart_type == 'violin_plot' %}selected{% endif %}>Violin Plot</option>
+                        <option value="line_chart" {% if chart_type == 'line_chart' %}selected{% endif %}>Line Chart</option>
+                        <option value="heatmap" {% if chart_type == 'heatmap' %}selected{% endif %}>Heatmap</option>
+                        <option value="count_plot" {% if chart_type == 'count_plot' %}selected{% endif %}>Count Plot</option>
+                        <option value="kde_plot" {% if chart_type == 'kde_plot' %}selected{% endif %}>KDE Plot</option>
+                    </select>
+                </div>
+
+                <div class="column-selection" id="column_selection" style="display: {% if chart_type != 'scatter_plot' %}block{% else %}none{% endif %}">
+                    <label for="column">Column:</label>
+                    <select id="column" name="column">
+                        {% for column in columns %}
+                            <option value="{{ column }}" {% if selected_column == column %}selected{% endif %}>{{ column }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="scatter-columns" id="scatter_columns" style="display: {% if chart_type == 'scatter_plot' %}block{% else %}none{% endif %}">
+                    <label for="x_column">Column X:</label>
+                    <select id="x_column" name="x_column">
+                        {% for column in columns %}
+                            <option value="{{ column }}" {% if selected_x_column == column %}selected{% endif %}>{{ column }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="y_column">Column Y:</label>
+                    <select id="y_column" name="y_column">
+                        {% for column in columns %}
+                            <option value="{{ column }}" {% if selected_y_column == column %}selected{% endif %}>{{ column }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button type="submit" class="generate-btn">Generate Graph</button>
+            </form>
+        </div>
+
+        <div class="charts">
+            {% for chart in charts %}
+            <div class="chart-container">
+                {{ chart|safe }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function updateColumnSelection() {
+            var chartType = document.getElementById('chart_type').value;
+            var scatterColumns = document.getElementById('scatter_columns');
+            var columnSelection = document.getElementById('column_selection');
+
+            if (chartType === 'scatter_plot') {
+                scatterColumns.style.display = 'block';
+                columnSelection.style.display = 'none';
+            } else {
+                scatterColumns.style.display = 'none';
+                columnSelection.style.display = 'block';
+            }
+        }
+
+        window.onload = function() {
+            updateColumnSelection();
+        };
+    </script>
+</body>
+</html>
