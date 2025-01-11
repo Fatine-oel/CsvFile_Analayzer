@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload a CSV File</title>
+    {% load static %} 
+    <style>
+        body {
+            background: url("{% static 'images/im3.jpg' %}") no-repeat center center fixed;
+            background-size: cover; 
+            color: #4A4A4A;
+            font-family: 'Montserrat', sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 0;
+            transition: background-color 0.5s ease;
+        }
+
+        .container {
+            max-width: 600px; 
+            width: 90%;
+            text-align: center;
+            padding: 40px;
+            border-radius: 20px;
+            background-color: #FFFFFF;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            transform: scale(1.05);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: scale(1.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            font-size: 3em;
+            font-weight: bold;
+            color: #4A4A4A; 
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.3em;
+            color: #4A4A4A;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            opacity: 0.85;
+        }
+
+        button {
+            background-color: #FAD0E6; 
+            color: #3B3B48; 
+            border: 2px solid #3B3B48;
+            padding: 10px 20px; 
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px; 
+            font-weight: bold; 
+            transition: background-color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #F8C8D2; 
+            transform: scale(1.1);
+            border-color: #3B3B48;
+        }
+
+        button:active {
+            transform: scale(1.05);
+        }
+
+        input[type="file"] {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Please upload a CSV file</h1>
+        <p>Upload your CSV file and analyze the data with ease.</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Analyze</button>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Fatine's App!</title>
+    {% load static %} 
+    <style>
+        body {
+            background: url("{% static 'images/im1.jpg' %}") no-repeat center center fixed;
+            background-size: cover; 
+            color: #4A4A4A;
+            font-family: 'Montserrat', sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 0;
+            transition: background-color 0.5s ease;
+        }
+
+        .container {
+            max-width: 900px; 
+            width: 90%;
+            text-align: center;
+            padding: 50px;
+            border-radius: 20px;
+            background-color: #FFFFFF; 
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            transform: scale(1.05);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: scale(1.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            font-size: 3.8em;
+            font-weight: bold;
+            color: #4A4A4A; 
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+            animation: lightEffect 3s ease-in-out infinite alternate;
+        }
+
+        p {
+            font-size: 1.5em;
+            color: #4A4A4A;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            opacity: 0.85;
+        }
+
+        a {
+            font-size: 1.6em;
+            color: #8D6F64;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 18px 40px;
+            border-radius: 12px;
+            background-color: #F0D5D9; 
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #8D6F64;
+            color: #F0D5D9;
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        a:active {
+            transform: scale(1.05);
+        }
+
+        @keyframes lightEffect {
+            0% {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.7);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.7);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container"> 
+        <h1>Welcome to CSV file Analayzer</h1> 
+        <p>Explore and analyze your data with ease.</p>
+        <a href="{% url 'upload_file' %}">Upload CSV File</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Data</title>
+    {% load static %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            background-image: url("{% static 'images/im3.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-weight: bold;  /* Toute l'écriture de la page en gras */
+            overflow-x: hidden;  /* Prevent horizontal scroll */
+        }
+
+        /* Buttons container at the top right */
+        .buttons-container {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px;
+            gap: 20px;  /* Space between buttons */
+        }
+
+        .buttons-container button {
+            padding: 10px;
+            background-color: #F8D7EB;  /* Baby pink background */
+            color: #3B3B48;  /* Indigo blue text */
+            border: 2px solid #3B3B48;  /* Indigo blue border */
+            border-radius: 12px;  /* Rounded corners */
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;  /* Text inside buttons in bold */
+            transition: all 0.3s ease;  /* Smooth transition */
+        }
+
+        /* Buttons hover effect */
+        .buttons-container button:hover {
+            background-color: #3B3B48;  /* Dark grey-blue background */
+            color: white;  /* White text */
+            transform: scale(1.1);  /* Slightly enlarge the button */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  /* Add shadow */
+        }
+
+        /* Search buttons hover effect */
+        .search-bar button:hover {
+            background-color: #3B3B48;  /* Dark grey-blue background */
+            color: white;  /* White text */
+            transform: scale(1.1);  /* Slightly enlarge the button */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  /* Add shadow */
+        }
+
+        /* Content wrapper */
+        .main-content {
+            display: flex;
+            flex-grow: 1;
+            padding: 20px;
+            background-color: transparent;  /* Fond transparent pour laisser l'image visible */
+            border-radius: 10px;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards;  /* Fade-in effect */
+        }
+
+        /* Content Area */
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Dataset Name */
+        .dataset-name {
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: white; /* Text color changed to white */
+            animation: slideIn 1s ease-out;  /* Slide-in effect */
+        }
+
+        /* Search container */
+        .search-container {
+            display: flex;
+            justify-content: space-between;  /* Align one to left and the other to right */
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .search-bar label {
+            color: white; /* Make the label text white */
+        }
+
+        /* Style for search input, select and buttons */
+        .search-bar input, .search-bar select {
+            padding: 8px;
+            width: 200px;
+            margin-right: 10px;
+            background-color: #F8D7EB;  /* Baby pink background */
+            color: #3B3B48;  /* Indigo blue text */
+            border: 2px solid #3B3B48;  /* Indigo blue border */
+            border-radius: 12px;  /* Rounded corners */
+            font-weight: bold;  /* Text inside input/select in bold */
+            transition: all 0.3s ease;  /* Smooth transition */
+        }
+
+        .search-bar input:focus, .search-bar select:focus {
+            outline: none;  /* Remove the default focus outline */
+            box-shadow: 0 0 8px #3B3B48;  /* Add shadow for focus effect */
+        }
+
+        .table-container {
+            width: 100%;
+        }
+
+        /* Table styling: baby pink background with transparent effect, blue indigo borders */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: rgba(248, 215, 235, 0.8); /* Baby pink with transparency */
+            opacity: 0;
+            animation: fadeIn 1s forwards;  /* Fade-in effect */
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 2px solid #3B3B48; /* Blue Indigo border with the new specified color */
+            transition: all 0.2s ease;  /* Smooth transition */
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        table td {
+            border: 2px solid #3B3B48; /* Blue Indigo border with the new specified color */
+        }
+
+        table tr:hover {
+            background-color: rgba(248, 215, 235, 0.6);  /* Slightly darker background on row hover */
+            transform: scale(1.02);  /* Slightly enlarge row */
+        }
+
+        h1 {
+            color: white; /* Dataset title in white */
+        }
+
+        /* Fade-in effect for elements */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Slide-in effect for dataset name */
+        @keyframes slideIn {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Buttons container at the top right -->
+    <div class="buttons-container">
+        <a href="{% url 'stat_analysis' %}">
+            <button class="active-button">Statistical Analysis</button>
+        </a>
+        <a href="{% url 'visualisation' %}">
+            <button>Data Visualization</button>
+        </a>
+        <a href="{% url 'upload_file' %}">
+            <button>Back to Upload</button>
+        </a>
+    </div>
+
+    <div class="main-content">
+        <div class="content">
+            <div class="dataset-name">
+                <strong>{{ dataset_name }}</strong>
+            </div>
+
+            <!-- Aligning the search bars -->
+            <div class="search-container">
+                <div class="search-bar">
+                    <input type="text" id="search-index" placeholder="Search by index" oninput="searchIndex()">
+                    <button onclick="searchIndex()">Search</button>
+                </div>
+
+                <div class="search-bar">
+                    <label for="column-select">Select column   </label>
+                    <select id="column-select" onchange="searchColumn()">
+                        <option value="">Select a column</option>
+                        {% for column in data.columns %}
+                            <option value="{{ column }}">{{ column }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="text" id="search-column" placeholder="Search in column" oninput="searchColumn()">
+                    <button onclick="searchColumn()">Search</button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <h1>Dataset</h1> <!-- Titre Dataset en blanc -->
+                <table id="data-table">
+                    <thead>
+                        <tr>
+                            {% for column in data.columns %}
+                                <th>{{ column }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data.values %}
+                            <tr>
+                                {% for cell in row %}
+                                    <td>{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function searchIndex() {
+    var input = document.getElementById("search-index");
+    var filter = input.value.trim(); // Supprimer les espaces
+    var table = document.getElementById("data-table");
+    var rows = table.getElementsByTagName("tr");
+
+    if (filter === "") {
+        // Si la barre de recherche est vide, afficher toutes les lignes
+        for (var i = 1; i < rows.length; i++) {
+            rows[i].style.display = ""; // Afficher toutes les lignes
+        }
+    } else {
+        // Sinon, chercher et afficher uniquement la ligne correspondant à l'index
+        var index = parseInt(filter); // Convertir en entier
+        for (var i = 1; i < rows.length; i++) {
+            if (i === index) {
+                rows[i].style.display = ""; // Afficher la ligne correspondant à l'index
+            } else {
+                rows[i].style.display = "none"; // Masquer les autres lignes
+            }
+        }
+    }
+}
+
+
+
+        function searchColumn() {
+            var selectedColumn = document.getElementById("column-select").value;
+            var filter = document.getElementById("search-column").value.toLowerCase();
+            var table = document.getElementById("data-table");
+            var rows = table.getElementsByTagName("tr");
+
+            if (!selectedColumn) return;
+
+            var columnIndex = Array.from(rows[0].cells).findIndex(cell => cell.textContent.trim() === selectedColumn);
+
+            for (var i = 1; i < rows.length; i++) {
+                var row = rows[i];
+                var cell = row.getElementsByTagName("td")[columnIndex];
+
+                if (cell) {
+                    var cellText = cell.textContent || cell.innerText;
+                    if (cellText.toLowerCase() === filter) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
