@@ -22,35 +22,28 @@ This Django project allows you to upload CSV files, perform statistical analysis
 ## Installation
 
 1. Clone the repository to your local machine:
-
-   ```bash
    git clone https://github.com/Fatine-oel/CsvFile_Analyzer.git
    cd CsvFile_Analyzer
-Create a virtual environment and install the dependencies:
-
-bash
-Copy code
+   
+## Create a virtual environment and install the dependencies:
 python -m venv venv
 source venv/bin/activate  # On Windows, use venv\Scripts\activate
 pip install -r requirements.txt
-Apply the database migrations:
 
-bash
-Copy code
+## Apply the database migrations:
 python manage.py migrate
-Start the development server:
 
-bash
-Copy code
+## Start the development server:
 python manage.py runserver
 You can now access the app at http://127.0.0.1:8000/.
 
-Usage
+## Usage
 Upload a CSV File: Go to the homepage and upload a CSV file.
 View Data: After uploading, you will be redirected to the page displaying the data.
 Statistical Analysis: Select a column to obtain descriptive statistics like mean, median, standard deviation, etc.
 Visualization: Select a chart type (histogram, bar chart, etc.) to visualize the data.
-File Structure
+
+## File Structure
 gestion_fichiers/: Main folder containing the application code.
 migrations/: Contains database migration files.
 templates/: Contains HTML files for each page of the app.
@@ -62,11 +55,6 @@ visualisation.html: Visualization page with chart selection.
 forms.py: Contains the form for uploading files.
 views.py: Contains views for managing data display and analysis.
 urls.py: Contains the app's URLs.
-Contributing
-Fork this repository.
-Create a branch for your feature (git checkout -b feature/your-feature-name).
-Commit your changes (git commit -am 'Add a new feature').
-Push to your branch (git push origin feature/your-feature-name).
-Open a Pull Request to merge your changes.
-Authors
-Fatine El Ouahdani
+
+## Authors
+Fatine El Ouahdani - Lead Developer.
